@@ -36,11 +36,11 @@ export function LoginPage({
   ];
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#1f1f1f] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <CompanyLogo />
         
-        <Card className="bg-[#2a2a2a] border-gray-700">
+        <Card className="bg-[#0a0a0a] border-[#333333]">
           <CardContent className="p-8">
             <div className="space-y-6">
               {/* Header */}

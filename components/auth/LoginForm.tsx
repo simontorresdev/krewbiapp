@@ -33,7 +33,7 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
           placeholder="m@example.com"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className="bg-transparent border-gray-600 text-white placeholder:text-gray-500 focus:border-gray-400 focus:ring-0"
+          className="bg-[#1a1a1a] border-[#333333] text-white placeholder:text-gray-500 focus:border-[#444444] focus:ring-0"
           disabled={isLoading}
         />
         {errors.email && (
@@ -58,7 +58,7 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
           type="password"
           value={formData.password}
           onChange={(e) => updateField('password', e.target.value)}
-          className="bg-transparent border-gray-600 text-white placeholder:text-gray-500 focus:border-gray-400 focus:ring-0"
+          className="bg-[#1a1a1a] border-[#333333] text-white placeholder:text-gray-500 focus:border-[#444444] focus:ring-0"
           disabled={isLoading}
         />
         {errors.password && (
