@@ -17,7 +17,7 @@ export function SocialAuthButton({ provider, isLoading = false, disabled = false
       type="button"
       variant="outline"
       size="lg"
-      className="w-full bg-transparent border-[#333333] text-white hover:bg-[#1a1a1a] hover:border-[#444444] transition-colors"
+      className="w-full bg-white/10 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:bg-white/20 dark:hover:bg-gray-700/50 transition-colors duration-200"
       onClick={provider.onClick}
       disabled={isLoading || disabled}
     >

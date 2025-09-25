@@ -24,31 +24,31 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
   return (
     <form onSubmit={onFormSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-white">
+        <Label htmlFor="email" className="text-gray-900 dark:text-white">
           Email
         </Label>
         <Input
           id="email"
           type="email"
-          placeholder="m@example.com"
+          placeholder="alejandro.imagine@yopmail.com"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className="bg-[#1a1a1a] border-[#333333] text-white placeholder:text-gray-500 focus:border-[#444444] focus:ring-0"
+          className="bg-white/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
           disabled={isLoading}
         />
         {errors.email && (
-          <p className="text-sm text-red-400">{errors.email}</p>
+          <p className="text-sm text-red-500">{errors.email}</p>
         )}
       </div>
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-white">
+          <Label htmlFor="password" className="text-gray-900 dark:text-white">
             Password
           </Label>
           <button
             type="button"
-            className="text-sm text-gray-400 hover:text-white transition-colors"
+            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             Forgot your password?
           </button>
@@ -58,18 +58,18 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
           type="password"
           value={formData.password}
           onChange={(e) => updateField('password', e.target.value)}
-          className="bg-[#1a1a1a] border-[#333333] text-white placeholder:text-gray-500 focus:border-[#444444] focus:ring-0"
+          className="bg-white/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
           disabled={isLoading}
         />
         {errors.password && (
-          <p className="text-sm text-red-400">{errors.password}</p>
+          <p className="text-sm text-red-500">{errors.password}</p>
         )}
       </div>
 
       <Button
         type="submit"
         size="lg"
-        className="w-full bg-white text-black hover:bg-gray-100 transition-colors"
+        className="w-full"
         disabled={isLoading}
       >
         {isLoading ? 'Logging in...' : 'Login'}
