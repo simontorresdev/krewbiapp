@@ -15,7 +15,7 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-pulse">
             <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4"></div>
@@ -27,7 +27,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md mx-auto p-8">
         <div className="text-center">
           {/* Logo de la empresa */}
