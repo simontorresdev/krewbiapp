@@ -9,23 +9,20 @@ import { SignUpPrompt } from './SignUpPrompt';
 import { TermsAndPrivacy } from './TermsAndPrivacy';
 import { signInWithGoogle } from '@/lib/supabase';
 import type { LoginProps, AuthProvider } from '@/lib/types/auth';
+import toast from 'react-hot-toast';
 
 export function LoginPage({
   onLogin,
-  onGoogleLogin,
   isLoading = false,
 }: LoginProps) {
   const handleGoogleLogin = async () => {
     try {
       const { error } = await signInWithGoogle();
       if (error) {
-        console.error('Error al iniciar sesión con Google:', error);
-      } else {
-        // La redirección se maneja automáticamente
-        await onGoogleLogin?.();
+        toast.error('Error al iniciar sesión con Google');
       }
-    } catch (error) {
-      console.error('Error inesperado:', error);
+    } catch {
+      toast.error('Error inesperado');
     }
   };
 

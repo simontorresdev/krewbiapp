@@ -30,3 +30,22 @@ export interface SignUpProps {
   onGoogleSignUp?: () => Promise<void>;
   isLoading?: boolean;
 }
+
+export interface ForgotPasswordFormData {
+  email: string;
+}
+
+export interface ResetPasswordFormData {
+  password: string;
+  confirmPassword: string;
+}
+
+export interface ForgotPasswordProps {
+  onSubmit?: (data: ForgotPasswordFormData) => Promise<void>;
+  isLoading?: boolean;
+}
+
+export interface ResetPasswordProps {
+  onSubmit?: (data: ResetPasswordFormData) => Promise<void>;
+  isLoading?: boolean;
+}

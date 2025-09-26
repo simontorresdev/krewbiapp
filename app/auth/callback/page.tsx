@@ -1,39 +1,47 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 export default function AuthCallbackPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const handleAuthCallback = async () => {
+    const handleCallback = async () => {
+      const { searchParams } = new URL(window.location.href);
+      const type = searchParams.get('type');
+      const next = searchParams.get('next');
+      const code = searchParams.get('code');
+
       try {
-        const { data, error } = await supabase.auth.getSession();
-        
-        if (error) {
-          console.error('Error al obtener sesión:', error);
-          router.push('/login?error=auth_callback_failed');
-          return;
+        if (code) {
+          // Intercambiar el código por una sesión
+          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+          if (error) {
+            console.error('Error en callback:', error);
+            router.push('/login?error=' + encodeURIComponent(error.message));
+            return;
+          }
         }
 
-        if (data.session) {
-          // Usuario autenticado exitosamente
-          router.push('/');
+        // Redirigir según el tipo, sin importar si había código
+        if (type === 'recovery') {
+          router.push(next || '/auth/reset-password');
+        } else if (type === 'signup') {
+          router.push('/signup/success');
         } else {
-          // No hay sesión, redirigir a login
-          router.push('/login');
+          router.push('/');
         }
       } catch (error) {
         console.error('Error inesperado:', error);
-        router.push('/login?error=unexpected_error');
+        router.push('/login');
       }
     };
 
-    handleAuthCallback();
-  }, [router, searchParams]);
+    handleCallback();
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">

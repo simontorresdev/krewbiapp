@@ -32,14 +32,9 @@ export default function Login() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    console.log('Login with Google - handled by LoginPage component');
-  };
-
   return (
     <LoginPage
       onLogin={handleLogin}
-      onGoogleLogin={handleGoogleLogin}
       isLoading={isLoading}
     />
   );

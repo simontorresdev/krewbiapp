@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useLoginForm } from '@/lib/hooks/useLoginForm';
+import Link from 'next/link';
 import type { LoginFormData } from '@/lib/types/auth';
 
 interface LoginFormProps {
@@ -46,12 +47,12 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
           <Label htmlFor="password" className="text-gray-900 dark:text-white">
             Contraseña
           </Label>
-          <button
-            type="button"
+          <Link
+            href="/forgot-password"
             className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
             Olvidaste tu contraseña?
-          </button>
+          </Link>
         </div>
         <Input
           id="password"
