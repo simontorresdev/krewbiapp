@@ -25,12 +25,12 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
     <form onSubmit={onFormSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="email" className="text-gray-900 dark:text-white">
-          Email
+          Correo electrónico
         </Label>
         <Input
           id="email"
           type="email"
-          placeholder="alejandro.imagine@yopmail.com"
+          placeholder="Ingresa tu correo"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
           className="bg-white/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
@@ -44,18 +44,19 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="password" className="text-gray-900 dark:text-white">
-            Password
+            Contraseña
           </Label>
           <button
             type="button"
             className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
           >
-            Forgot your password?
+            Olvidaste tu contraseña?
           </button>
         </div>
         <Input
           id="password"
           type="password"
+          placeholder="Ingresa tu contraseña"
           value={formData.password}
           onChange={(e) => updateField('password', e.target.value)}
           className="bg-white/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-blue-500 dark:focus:border-blue-400"
@@ -72,7 +73,7 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? 'Logging in...' : 'Login'}
+        {isLoading ? 'Iniciando...' : 'Iniciar Sesión'}
       </Button>
     </form>
   );

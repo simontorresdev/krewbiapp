@@ -15,19 +15,19 @@ export function TermsAndPrivacy({
 }: TermsAndPrivacyProps) {
   return (
     <p className={`text-center text-xs text-gray-500 leading-relaxed ${className}`}>
-      By clicking continue, you agree to our{' '}
+      Al crear una cuenta, aceptas nuestros{' '}
       <Link 
         href={termsUrl} 
         className="underline hover:text-gray-400 transition-colors"
       >
-        Terms of Service
+        Términos de Servicio
       </Link>{' '}
-      and{' '}
+      y{' '}
       <Link 
         href={privacyUrl} 
         className="underline hover:text-gray-400 transition-colors"
       >
-        Privacy Policy
+        Política de Privacidad
       </Link>
     </p>
   );

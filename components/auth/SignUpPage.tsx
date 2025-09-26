@@ -4,25 +4,25 @@ import { Chromium } from 'lucide-react';
 import { CompanyLogo } from './CompanyLogo';
 import { SocialAuthSection } from './SocialAuthSection';
 import { AuthSeparator } from './AuthSeparator';
-import { LoginForm } from './LoginForm';
-import { SignUpPrompt } from './SignUpPrompt';
+import { SignUpForm } from './SignUpForm';
+import { LoginPrompt } from './LoginPrompt';
 import { TermsAndPrivacy } from './TermsAndPrivacy';
 import { signInWithGoogle } from '@/lib/supabase';
-import type { LoginProps, AuthProvider } from '@/lib/types/auth';
+import type { SignUpProps, AuthProvider } from '@/lib/types/auth';
 
-export function LoginPage({
-  onLogin,
-  onGoogleLogin,
+export function SignUpPage({
+  onSignUp,
+  onGoogleSignUp,
   isLoading = false,
-}: LoginProps) {
-  const handleGoogleLogin = async () => {
+}: SignUpProps) {
+  const handleGoogleSignUp = async () => {
     try {
       const { error } = await signInWithGoogle();
       if (error) {
-        console.error('Error al iniciar sesión con Google:', error);
+        console.error('Error al registrarse con Google:', error);
       } else {
         // La redirección se maneja automáticamente
-        await onGoogleLogin?.();
+        await onGoogleSignUp?.();
       }
     } catch (error) {
       console.error('Error inesperado:', error);
@@ -32,9 +32,9 @@ export function LoginPage({
   const socialProviders: AuthProvider[] = [
     {
       id: 'google',
-      name: 'Iniciar sesión con Google',
+      name: 'Registrarse con Google',
       icon: Chromium,
-      onClick: handleGoogleLogin,
+      onClick: handleGoogleSignUp,
     },
   ];
 
@@ -48,10 +48,10 @@ export function LoginPage({
           {/* Mensaje de bienvenida */}
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Bienvenido de vuelta
+              Crear cuenta
             </h1>
             <p className="text-gray-600 dark:text-gray-300">
-              Inicia sesión con tu cuenta de Google
+              Únete a Krewbi y comienza a jugar
             </p>
           </div>
           
@@ -63,11 +63,11 @@ export function LoginPage({
             {/* Separator */}
             <AuthSeparator />
 
-            {/* Login Form */}
-            <LoginForm onSubmit={onLogin} isLoading={isLoading} />
+            {/* Sign Up Form */}
+            <SignUpForm onSubmit={onSignUp!} isLoading={isLoading} />
 
-            {/* Sign Up Prompt */}
-            <SignUpPrompt className="mt-6" />
+            {/* Login Prompt */}
+            <LoginPrompt className="mt-6" />
             
             {/* Terms and Privacy */}
             <TermsAndPrivacy className="mt-6" />

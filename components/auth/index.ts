@@ -1,7 +1,10 @@
 export { LoginPage } from './LoginPage';
 export { LoginForm } from './LoginForm';
+export { SignUpPage } from './SignUpPage';
+export { SignUpForm } from './SignUpForm';
 export { SocialAuthSection, SocialAuthButton } from './SocialAuthSection';
 export { CompanyLogo } from './CompanyLogo';
 export { AuthSeparator } from './AuthSeparator';
 export { SignUpPrompt } from './SignUpPrompt';
+export { LoginPrompt } from './LoginPrompt';
 export { TermsAndPrivacy } from './TermsAndPrivacy';
