@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useLoginForm } from '@/lib/hooks/useLoginForm';
+import { FormLoadingSpinner } from '@/components/ui/loading-spinner';
 import Link from 'next/link';
 import type { LoginFormData } from '@/lib/types/auth';
 
@@ -74,7 +75,11 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? 'Iniciando...' : 'Iniciar Sesión'}
+        {isLoading ? (
+          <FormLoadingSpinner text="Iniciando..." />
+        ) : (
+          'Iniciar Sesión'
+        )}
       </Button>
     </form>
   );

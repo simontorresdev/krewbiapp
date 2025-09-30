@@ -7,7 +7,7 @@ import { resetPassword } from '@/lib/supabase';
 import { handleAuthError, showAuthSuccess } from '@/lib/utils/authErrors';
 import type { ForgotPasswordFormData } from '@/lib/types/auth';
 
-export default function ForgotPasswordPageRoute() {
+export default function ForgotPassword() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

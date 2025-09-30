@@ -5,9 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ResetPasswordPage } from '@/components/auth/ResetPasswordPage';
 import { updatePassword, supabase } from '@/lib/supabase';
 import { handleAuthError, showAuthSuccess } from '@/lib/utils/authErrors';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import type { ResetPasswordFormData } from '@/lib/types/auth';
 
-export default function ResetPasswordPageRoute() {
+export default function ResetPassword() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function ResetPasswordPageRoute() {
 
       if (accessToken && refreshToken && type === 'recovery') {
         // Establecer la sesión usando los tokens
-        const { data, error } = await supabase.auth.setSession({
+        const { error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken
         });
@@ -75,14 +76,11 @@ export default function ResetPasswordPageRoute() {
   // Mostrar loading mientras se valida el token
   if (!isValidToken) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">
-            Validando enlace...
-          </p>
-        </div>
-      </div>
+      <LoadingSpinner 
+        size="lg" 
+        text="Validando enlace..." 
+        fullScreen 
+      />
     );
   }
 

@@ -4,9 +4,10 @@ import { CompanyLogo } from '@/components/auth/CompanyLogo';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { signOut } from '@/lib/supabase';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Link from 'next/link';
 
-export default function HomePage() {
+export default function Home() {
   const { user, loading, isAuthenticated } = useAuth();
 
   const handleSignOut = async () => {
@@ -15,14 +16,11 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-pulse">
-            <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-4"></div>
-            <div className="w-32 h-4 bg-gray-300 rounded mx-auto"></div>
-          </div>
-        </div>
-      </div>
+      <LoadingSpinner 
+        size="lg" 
+        text="Cargando aplicación..." 
+        fullScreen 
+      />
     );
   }
 

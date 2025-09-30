@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForgotPasswordForm } from '@/lib/hooks/useForgotPasswordForm';
+import { FormLoadingSpinner } from '@/components/ui/loading-spinner';
 import { ForgotPasswordFormData } from '@/lib/types/auth';
 
 interface ForgotPasswordFormProps {
@@ -44,7 +45,11 @@ export function ForgotPasswordForm({ onSubmit, isLoading = false }: ForgotPasswo
         disabled={isLoading}
         size="lg"
       >
-        {isLoading ? 'Enviando...' : 'Enviar enlace de recuperación'}
+        {isLoading ? (
+          <FormLoadingSpinner text="Enviando..." />
+        ) : (
+          'Enviar enlace de recuperación'
+        )}
       </Button>
     </form>
   );

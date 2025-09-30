@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
-export default function AuthCallbackPage() {
+export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function AuthCallbackPage() {
       try {
         if (code) {
           // Intercambiar el código por una sesión
-          const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
 
           if (error) {
             console.error('Error en callback:', error);
@@ -44,13 +45,10 @@ export default function AuthCallbackPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-gray-600 dark:text-gray-300">
-          Procesando autenticación...
-        </p>
-      </div>
-    </div>
+    <LoadingSpinner 
+      size="lg" 
+      text="Procesando autenticación..." 
+      fullScreen 
+    />
   );
 }

@@ -11,6 +11,9 @@ export default function ConditionalBottomNav() {
     '/',
     '/mis-partidos',
     '/perfil',
+    '/perfil/editar',
+    '/perfil/cambiar-contrasena',
+    '/perfil/informacion',
   ];
   
   // Verificar si la ruta actual debería mostrar la navegación

@@ -12,3 +12,4 @@ export { AuthSeparator } from './AuthSeparator';
 export { SignUpPrompt } from './SignUpPrompt';
 export { LoginPrompt } from './LoginPrompt';
 export { TermsAndPrivacy } from './TermsAndPrivacy';
+export { default as AuthGuard } from './AuthGuard';

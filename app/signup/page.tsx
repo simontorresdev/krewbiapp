@@ -7,7 +7,7 @@ import { SignUpFormData } from '@/lib/types/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-export default function SignUpPageRoute() {
+export default function SignUp() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

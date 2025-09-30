@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useResetPasswordForm } from '@/lib/hooks/useResetPasswordForm';
+import { FormLoadingSpinner } from '@/components/ui/loading-spinner';
 import { ResetPasswordFormData } from '@/lib/types/auth';
 
 interface ResetPasswordFormProps {
@@ -61,7 +62,11 @@ export function ResetPasswordForm({ onSubmit, isLoading = false }: ResetPassword
         disabled={isLoading}
         size="lg"
       >
-        {isLoading ? 'Actualizando...' : 'Actualizar contraseña'}
+        {isLoading ? (
+          <FormLoadingSpinner text="Actualizando..." />
+        ) : (
+          'Actualizar contraseña'
+        )}
       </Button>
     </form>
   );

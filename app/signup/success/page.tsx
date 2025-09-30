@@ -9,7 +9,7 @@ import { resendConfirmationEmail } from '@/lib/supabase';
 import { handleAuthError, showAuthSuccess } from '@/lib/utils/authErrors';
 import Link from 'next/link';
 
-export default function SignUpSuccessPage() {
+export default function SignUpSuccess() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [email, setEmail] = useState<string>('');

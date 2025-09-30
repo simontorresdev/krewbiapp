@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useSignUpForm } from '@/lib/hooks/useSignUpForm';
+import { FormLoadingSpinner } from '@/components/ui/loading-spinner';
 import { SignUpFormData } from '@/lib/types/auth';
 
 interface SignUpFormProps {
@@ -112,7 +113,11 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
         disabled={isLoading}
         size="lg"
       >
-        {isLoading ? 'Creando cuenta...' : 'Crear cuenta'}
+        {isLoading ? (
+          <FormLoadingSpinner text="Creando cuenta..." />
+        ) : (
+          'Crear cuenta'
+        )}
       </Button>
     </form>
   );
