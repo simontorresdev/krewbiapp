@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/lib/hooks/useAuth';
+import { useAuth } from '@/lib/contexts/AuthContext';
 import { signOut } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { User, Edit, Lock, Info, LogOut, ChevronRight } from 'lucide-react';
@@ -48,12 +48,7 @@ function ProfileContent() {
     },
   ];
 
-  console.log('User data:', {
-    user,
-    avatar_url: user?.user_metadata?.avatar_url,
-    full_name: user?.user_metadata?.full_name,
-    imageError
-  });
+
 
   return (
     <div className="min-h-screen py-8 px-4">

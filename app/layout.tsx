@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from '@/lib/contexts/AuthContext';
 import ConditionalBottomNav from '@/components/ui/ConditionalBottomNav';
 import "./globals.css";
 
@@ -29,10 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 min-h-screen`}
       >
-        <div className="max-w-[1000px] mx-auto">
-          {children}
-        </div>
-        <ConditionalBottomNav />
+        <AuthProvider>
+          <div className="max-w-[1000px] mx-auto">
+            {children}
+          </div>
+          <ConditionalBottomNav />
+        </AuthProvider>
         <Toaster 
           position="top-right"
           toastOptions={{

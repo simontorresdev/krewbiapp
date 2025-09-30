@@ -2,7 +2,7 @@
 
 import { CompanyLogo } from '@/components/auth/CompanyLogo';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/lib/hooks/useAuth';
+import { useAuth } from '@/lib/contexts/AuthContext';
 import { signOut } from '@/lib/supabase';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Link from 'next/link';
