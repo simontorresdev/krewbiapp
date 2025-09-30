@@ -27,24 +27,24 @@ function ProfileContent() {
       title: 'Edición de perfil',
       description: 'Actualiza tu información personal',
       href: '/perfil/editar',
-      bgColor: 'bg-blue-600 hover:bg-blue-700',
-      textColor: 'text-white',
+      bgColor: 'bg-app-primary hover:bg-app-primary-hover',
+      textColor: 'text-app-primary-text',
     },
     {
       icon: Lock,
       title: 'Cambiar contraseña',
       description: 'Modifica tu contraseña de acceso',
       href: '/perfil/cambiar-contrasena',
-      bgColor: 'bg-blue-600 hover:bg-blue-700',
-      textColor: 'text-white',
+      bgColor: 'bg-app-primary hover:bg-app-primary-hover',
+      textColor: 'text-app-primary-text',
     },
     {
       icon: Info,
       title: 'Información de la cuenta',
       description: 'Ver detalles de tu cuenta',
       href: '/perfil/informacion',
-      bgColor: 'bg-blue-600 hover:bg-blue-700',
-      textColor: 'text-white',
+      bgColor: 'bg-app-primary hover:bg-app-primary-hover',
+      textColor: 'text-app-primary-text',
     },
   ];
 
@@ -57,22 +57,17 @@ function ProfileContent() {
           <div className="text-center mb-8">
             {/* Avatar */}
             <div className="relative mb-6">
-              {user?.user_metadata?.avatar_url && !imageError ? (
-                <div className="w-28 h-28 rounded-full mx-auto ring-4 ring-blue-600/20 shadow-xl overflow-hidden bg-blue-600 p-1">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-white">
-                    <Image
-                      src={user.user_metadata.avatar_url}
-                      alt="Foto de perfil"
-                      width={112}
-                      height={112}
-                      className="w-full h-full object-cover"
-                      onError={() => setImageError(true)}
-                    />
-                  </div>
+                            {user?.user_metadata?.avatar_url ? (
+                <div className="w-28 h-28 rounded-full mx-auto shadow-xl overflow-hidden">
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    alt="Avatar"
+                    className="w-full h-full object-cover rounded-full bg-white"
+                  />
                 </div>
               ) : (
-                <div className="w-28 h-28 rounded-full mx-auto bg-blue-600 shadow-xl flex items-center justify-center ring-4 ring-blue-600/20">
-                  <User size={40} className="text-white" />
+                <div className="w-28 h-28 rounded-full mx-auto bg-app-primary shadow-xl flex items-center justify-center ring-4 ring-app-primary/20">
+                  <User className="h-12 w-12 text-app-primary-icon" />
                 </div>
               )}
             </div>

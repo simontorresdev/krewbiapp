@@ -25,6 +25,14 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-app-primary: var(--app-primary);
+  --color-app-primary-hover: var(--app-primary-hover);
+  --color-app-primary-light: var(--app-primary-light);
+  --color-app-primary-dark: var(--app-primary-dark);
+  --color-app-primary-bg: var(--app-primary-bg);
+  --color-app-primary-border: var(--app-primary-border);
+  --color-app-primary-text: var(--app-primary-text);
+  --color-app-primary-icon: var(--app-primary-icon);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -76,6 +84,15 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+  /* App Colors */
+  --app-primary: #2563eb; /* Primary color */
+  --app-primary-hover: #1d4ed8; /* Hover state */
+  --app-primary-light: #3b82f6; /* Light variant */
+  --app-primary-dark: #1e40af; /* Dark variant */
+  --app-primary-bg: #eff6ff; /* Background */
+  --app-primary-border: #93c5fd; /* Border */
+  --app-primary-text: #000000; /* Text color on primary buttons */
+  --app-primary-icon: #000000; /* Icon color on primary elements */
 }
 
 .dark {
@@ -110,6 +127,15 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
+  /* App Colors */
+  --app-primary: #EFFA41; /* Primary color */
+  --app-primary-hover: #E6F032; /* Hover state */
+  --app-primary-light: #F4FC6B; /* Light variant */
+  --app-primary-dark: #731DD8; /* Dark variant */
+  --app-primary-bg: #731DD8; /* Background for dark mode */
+  --app-primary-border: #731DD8; /* Border for dark mode */
+  --app-primary-text: #333333; /* Text color on primary buttons (dark mode) */
+  --app-primary-icon: #333333; /* Icon color on primary elements (dark mode) */
 }
 
 @layer base {

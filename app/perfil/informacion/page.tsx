@@ -93,17 +93,17 @@ export default function AccountInfo() {
               return (
                 <div
                   key={index}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700"
+                  className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300"
                 >
-                  <div className="flex items-start space-x-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center flex-shrink-0">
-                      <Icon size={20} className="text-blue-600 dark:text-blue-400" />
+                                    <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 rounded-xl bg-app-primary hover:bg-app-primary-hover flex items-center justify-center flex-shrink-0 shadow-lg transition-all duration-300">
+                      <Icon size={22} className="text-app-primary-icon" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-1">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-1">
                         {item.label}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 break-words">
+                      <p className="text-base font-medium text-gray-900 dark:text-white break-words">
                         {item.value}
                       </p>
                     </div>

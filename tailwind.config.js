@@ -59,6 +59,16 @@ module.exports = {
           border: 'var(--sidebar-border)',
           ring: 'var(--sidebar-ring)',
         },
+        'app-primary': {
+          DEFAULT: 'var(--app-primary)',
+          hover: 'var(--app-primary-hover)',
+          light: 'var(--app-primary-light)',
+          dark: 'var(--app-primary-dark)',
+          bg: 'var(--app-primary-bg)',
+          border: 'var(--app-primary-border)',
+          text: 'var(--app-primary-text)',
+          icon: 'var(--app-primary-icon)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

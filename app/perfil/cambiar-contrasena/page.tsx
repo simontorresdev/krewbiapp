@@ -89,7 +89,7 @@ function ChangePasswordContent() {
 
           {/* Mensaje para usuarios de Google */}
           <div className="text-center py-8">
-            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <div className="w-16 h-16 bg-app-primary/10 dark:bg-app-primary/20 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-2xl">🔒</span>
             </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
@@ -133,7 +133,7 @@ function ChangePasswordContent() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="newPassword">Nueva contraseña</Label>
+              <Label htmlFor="newPassword" className='mb-2'>Nueva contraseña</Label>
               <div className="relative">
                 <Input
                   id="newPassword"
@@ -160,7 +160,7 @@ function ChangePasswordContent() {
             </div>
 
             <div>
-              <Label htmlFor="confirmPassword">Confirmar contraseña</Label>
+              <Label htmlFor="confirmPassword" className='mb-2'>Confirmar contraseña</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
@@ -187,8 +187,8 @@ function ChangePasswordContent() {
             </div>
           </div>
 
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-            <p className="text-sm text-blue-800 dark:text-blue-300">
+          <div className="bg-app-primary/10 dark:bg-app-primary/20 p-4 rounded-lg">
+            <p className="text-sm text-app-primary dark:text-app-primary">
               <strong>Requisitos:</strong>
               <br />
               • Mínimo 6 caracteres

@@ -39,7 +39,7 @@ export default function BottomNavigation() {
               href={item.href}
               className={`flex flex-col items-center justify-center space-y-1 min-w-0 flex-1 ${
                 isActive
-                  ? 'text-blue-600 dark:text-blue-400'
+                  ? 'text-app-primary dark:text-app-primary'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
               } transition-colors duration-200`}
             >

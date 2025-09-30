@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { handleAuthError, showAuthSuccess } from '@/lib/utils/authErrors';
 import { AuthGuard } from '@/components/auth';
 
-export default function EditProfile() {
+function EditProfileContent() {
   const { user } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -58,89 +58,95 @@ export default function EditProfile() {
 
 
   return (
-    <AuthGuard>
-      <div className="min-h-screen py-8 px-4">
-        <div className="w-full max-w-md mx-auto">
-          {/* Header */}
-          <div className="flex items-center mb-8">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.back()}
-              className="mr-4"
-            >
-              <ArrowLeft size={20} />
-            </Button>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Editar perfil
-            </h1>
+    <div className="min-h-screen py-8 px-4">
+      <div className="w-full max-w-md mx-auto">
+        {/* Header */}
+        <div className="flex items-center mb-8">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="mr-4"
+          >
+            <ArrowLeft size={20} />
+          </Button>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Editar perfil
+          </h1>
+        </div>
+
+        {/* Formulario */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="fullName" className='mb-2'>Nombre completo</Label>
+              <Input
+                id="fullName"
+                name="fullName"
+                type="text"
+                placeholder="Tu nombre completo"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="phoneNumber" className='mb-2'>Número de teléfono</Label>
+              <Input
+                id="phoneNumber"
+                name="phoneNumber"
+                type="tel"
+                placeholder="+56 9 1234 5678"
+                value={formData.phoneNumber}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="email" className='mb-2'>Email (solo lectura)</Label>
+              <Input
+                id="email"
+                type="email"
+                value={user?.email || ''}
+                disabled
+                className="bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                El email no se puede modificar
+              </p>
+            </div>
           </div>
 
-          {/* Formulario */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="fullName">Nombre completo</Label>
-                <Input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  placeholder="Tu nombre completo"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="phoneNumber">Número de teléfono</Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  type="tel"
-                  placeholder="+56 9 1234 5678"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="email">Email (solo lectura)</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={user?.email || ''}
-                  disabled
-                  className="bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  El email no se puede modificar
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Guardando...' : 'Guardar cambios'}
-              </Button>
-              
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => router.back()}
-                disabled={isLoading}
-              >
-                Cancelar
-              </Button>
-            </div>
-          </form>
-        </div>
+          <div className="space-y-3">
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Guardando...' : 'Guardar cambios'}
+            </Button>
+            
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => router.back()}
+              disabled={isLoading}
+            >
+              Cancelar
+            </Button>
+          </div>
+        </form>
       </div>
+    </div>
+  );
+}
+
+export default function Profile () {
+  return (
+    <AuthGuard>
+      <EditProfileContent />
     </AuthGuard>
   );
 }

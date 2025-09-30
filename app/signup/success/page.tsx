@@ -63,7 +63,7 @@ export default function SignUpSuccess() {
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Hemos enviado un correo de confirmación a:
             </p>
-            <p className="text-lg font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-800">
+            <p className="text-lg font-semibold text-app-primary dark:text-app-primary bg-app-primary/10 dark:bg-app-primary/20 px-4 py-2 rounded-lg border border-app-primary/30 dark:border-app-primary/40">
               {email}
             </p>
           </div>
@@ -71,20 +71,20 @@ export default function SignUpSuccess() {
           {/* Instrucciones */}
           <div className="bg-white/50 dark:bg-gray-800/50 rounded-lg p-6 mb-8 text-left">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-              <Mail className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+              <Mail className="w-5 h-5 mr-2 text-app-primary dark:text-app-primary" />
               Próximos pasos:
             </h3>
             <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
               <li className="flex items-start">
-                <span className="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">1</span>
+                <span className="bg-app-primary text-app-primary-text rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">1</span>
                 Revisa tu bandeja de entrada y carpeta de spam
               </li>
               <li className="flex items-start">
-                <span className="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">2</span>
+                <span className="bg-app-primary text-app-primary-text rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">2</span>
                 Haz clic en el enlace de confirmación en el correo
               </li>
               <li className="flex items-start">
-                <span className="bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">3</span>
+                <span className="bg-app-primary text-app-primary-text rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 flex-shrink-0">3</span>
                 Inicia sesión y comienza a disfrutar Krewbi
               </li>
             </ol>

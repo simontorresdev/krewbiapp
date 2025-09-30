@@ -18,8 +18,8 @@ export function ResetPasswordPage({
           
           {/* Icono de seguridad */}
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-              <ShieldCheck className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            <div className="w-16 h-16 bg-app-primary/10 dark:bg-app-primary/20 rounded-full flex items-center justify-center">
+              <ShieldCheck className="w-8 h-8 text-app-primary dark:text-app-primary" />
             </div>
           </div>
           
