@@ -30,7 +30,7 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
           placeholder="Tu nombre completo"
           value={formData.fullName}
           onChange={(e) => updateField('fullName', e.target.value)}
-          className={errors.fullName ? 'border-red-500' : ''}
+          aria-invalid={!!errors.fullName}
           disabled={isLoading}
         />
         {errors.fullName && (
@@ -40,14 +40,14 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
 
       {/* Email */}
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">Correo electrónico</Label>
         <Input
           id="email"
           type="email"
           placeholder="tu@email.com"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className={errors.email ? 'border-red-500' : ''}
+          aria-invalid={!!errors.email}
           disabled={isLoading}
         />
         {errors.email && (
@@ -57,14 +57,14 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
 
       {/* Número de teléfono */}
       <div className="space-y-2">
-        <Label htmlFor="phoneNumber">Número de teléfono</Label>
+        <Label htmlFor="phoneNumber">Número de teléfono (opcional)</Label>
         <Input
           id="phoneNumber"
           type="tel"
-          placeholder="3015254461"
+          placeholder="+56 9 1234 5678"
           value={formData.phoneNumber}
           onChange={(e) => updateField('phoneNumber', e.target.value)}
-          className={errors.phoneNumber ? 'border-red-500' : ''}
+          aria-invalid={!!errors.phoneNumber}
           disabled={isLoading}
         />
         {errors.phoneNumber && (
@@ -78,10 +78,10 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
         <Input
           id="password"
           type="password"
-          placeholder="Mínimo 6 caracteres"
+          placeholder="Crea una contraseña segura"
           value={formData.password}
           onChange={(e) => updateField('password', e.target.value)}
-          className={errors.password ? 'border-red-500' : ''}
+          aria-invalid={!!errors.password}
           disabled={isLoading}
         />
         {errors.password && (
@@ -98,7 +98,7 @@ export function SignUpForm({ onSubmit, isLoading = false }: SignUpFormProps) {
           placeholder="Repite tu contraseña"
           value={formData.confirmPassword}
           onChange={(e) => updateField('confirmPassword', e.target.value)}
-          className={errors.confirmPassword ? 'border-red-500' : ''}
+          aria-invalid={!!errors.confirmPassword}
           disabled={isLoading}
         />
         {errors.confirmPassword && (

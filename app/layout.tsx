@@ -61,13 +61,13 @@ export default function RootLayout({
             },
             error: {
               style: {
-                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                background: 'linear-gradient(135deg, #EC0B43 0%, #D00A3A 100%)',
                 color: 'white',
                 border: 'none',
               },
               iconTheme: {
                 primary: 'white',
-                secondary: '#ef4444',
+                secondary: '#EC0B43',
               },
             },
           }}

@@ -11,7 +11,7 @@ export function LoginPrompt({ className = '' }: LoginPromptProps) {
         ¿Ya tienes una cuenta?{' '}
         <Link 
           href="/login" 
-          className="text-app-primary hover:text-app-primary-hover dark:text-app-primary dark:hover:text-app-primary-hover font-medium transition-colors"
+          className="text-white hover:underline transition-colors"
         >
           Inicia sesión
         </Link>

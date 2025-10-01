@@ -114,7 +114,7 @@ function ProfileContent() {
           <Button
             onClick={handleSignOut}
             variant="outline"
-            className="w-full border-2 border-red-300 text-red-600 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 hover:text-white hover:border-red-500 dark:border-red-600 dark:text-red-400 dark:hover:bg-gradient-to-r dark:hover:from-red-600 dark:hover:to-red-700 dark:hover:text-white dark:hover:border-red-500 transition-all duration-300 shadow-md hover:shadow-lg"
+            className="w-full border-2 border-app-error text-app-error hover:bg-app-error hover:text-app-error-text hover:border-app-error dark:border-app-error dark:text-app-error dark:hover:bg-app-error dark:hover:text-app-error-text dark:hover:border-app-error transition-all duration-300 shadow-md hover:shadow-lg"
           >
             <LogOut size={20} className="mr-2" />
             Cerrar sesión

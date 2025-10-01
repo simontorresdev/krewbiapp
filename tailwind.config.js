@@ -69,6 +69,16 @@ module.exports = {
           text: 'var(--app-primary-text)',
           icon: 'var(--app-primary-icon)',
         },
+        'app-error': {
+          DEFAULT: 'var(--app-error)',
+          hover: 'var(--app-error-hover)',
+          light: 'var(--app-error-light)',
+          dark: 'var(--app-error-dark)',
+          bg: 'var(--app-error-bg)',
+          border: 'var(--app-error-border)',
+          text: 'var(--app-error-text)',
+          icon: 'var(--app-error-icon)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

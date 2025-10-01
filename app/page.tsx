@@ -51,8 +51,8 @@ export default function Home() {
               >
                 Ir al Dashboard
               </Button>
-              <Button 
-                className="w-full"
+              <Button
+                className="w-full border-app-error text-app-error hover:bg-app-error hover:text-app-error-text"
                 size="lg"
                 variant="outline"
                 onClick={handleSignOut}

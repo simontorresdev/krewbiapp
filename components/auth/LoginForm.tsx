@@ -35,7 +35,6 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
           placeholder="Ingresa tu correo"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className="bg-white/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-app-primary dark:focus:border-app-primary"
           disabled={isLoading}
         />
         {errors.email && (
@@ -61,7 +60,6 @@ export function LoginForm({ onSubmit, isLoading: externalLoading = false }: Logi
           placeholder="Ingresa tu contraseña"
           value={formData.password}
           onChange={(e) => updateField('password', e.target.value)}
-          className="bg-white/50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-app-primary dark:focus:border-app-primary"
           disabled={isLoading}
         />
         {errors.password && (
