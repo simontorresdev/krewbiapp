@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { CompanyLogo } from '@/components/auth/CompanyLogo';
 import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Mail, ArrowRight, RotateCcw } from 'lucide-react';
 import { resendConfirmationEmail } from '@/lib/supabase';
 import { handleAuthError, showAuthSuccess } from '@/lib/utils/authErrors';
 import Link from 'next/link';
 
-export default function SignUpSuccess() {
+function SignUpSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
@@ -124,5 +125,13 @@ export default function SignUpSuccess() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignUpSuccess() {
+  return (
+    <Suspense fallback={<LoadingSpinner size="lg" text="Cargando..." fullScreen />}>
+      <SignUpSuccessContent />
+    </Suspense>
   );
 }

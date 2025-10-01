@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ResetPasswordPage } from '@/components/auth/ResetPasswordPage';
 import { updatePassword, supabase } from '@/lib/supabase';
@@ -8,7 +8,7 @@ import { handleAuthError, showAuthSuccess } from '@/lib/utils/authErrors';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import type { ResetPasswordFormData } from '@/lib/types/auth';
 
-export default function ResetPassword() {
+function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -89,5 +89,13 @@ export default function ResetPassword() {
       onSubmit={handleResetPassword}
       isLoading={isLoading}
     />
+  );
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense fallback={<LoadingSpinner size="lg" text="Cargando..." fullScreen />}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }
