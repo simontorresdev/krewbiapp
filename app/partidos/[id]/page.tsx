@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar, Clock, MapPin, Users, Video, DollarSign, UserCheck, Shield } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { getMatchById, getMatchPlayers, registerForMatch, unregisterFromMatch, isUserRegistered } from '@/lib/matches';
@@ -17,7 +15,7 @@ import Link from 'next/link';
 export default function MatchDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [match, setMatch] = useState<MatchWithStats | null>(null);
   const [players, setPlayers] = useState<MatchPlayer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,19 +24,7 @@ export default function MatchDetailPage() {
 
   const matchId = params.id as string;
 
-  useEffect(() => {
-    if (matchId) {
-      loadMatchData();
-    }
-  }, [matchId]);
-
-  useEffect(() => {
-    if (isAuthenticated && matchId) {
-      checkUserRegistration();
-    }
-  }, [isAuthenticated, matchId]);
-
-  const loadMatchData = async () => {
+  const loadMatchData = useCallback(async () => {
     try {
       const [matchData, playersData] = await Promise.all([
         getMatchById(matchId),
@@ -59,16 +45,28 @@ export default function MatchDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [matchId, router]);
 
-  const checkUserRegistration = async () => {
+  const checkUserRegistration = useCallback(async () => {
     try {
       const registered = await isUserRegistered(matchId);
       setUserRegistered(registered);
     } catch (error) {
       console.error('Error checking registration:', error);
     }
-  };
+  }, [matchId]);
+
+  useEffect(() => {
+    if (matchId) {
+      loadMatchData();
+    }
+  }, [matchId, loadMatchData]);
+
+  useEffect(() => {
+    if (isAuthenticated && matchId) {
+      checkUserRegistration();
+    }
+  }, [isAuthenticated, matchId, checkUserRegistration]);
 
   const handleRegister = async (position: 'player' | 'goalkeeper') => {
     if (!isAuthenticated) {
@@ -171,336 +169,261 @@ export default function MatchDetailPage() {
   const canRegisterAsGoalkeeper = match.stats && match.stats.available_goalkeeper_spots > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header con imagen de fondo */}
-      <div className="relative h-64 bg-gradient-to-r from-app-primary to-app-primary-hover">
-        {match.cover_image && (
-          <Image
-            src={match.cover_image}
-            alt={match.title}
-            fill
-            className="object-cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-black/50" />
-        
-        {/* Navegación */}
-        <div className="absolute top-4 left-4 z-10">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.back()}
-            className="bg-white/90 text-gray-900 hover:bg-white"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Volver
-          </Button>
-        </div>
-
-        {/* Badges */}
-        <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-          <Badge className="bg-black/70 text-white font-bold px-3 py-1">
-            {match.format}
-          </Badge>
-          {match.will_be_recorded && (
-            <Badge className="bg-red-600 text-white font-medium px-3 py-1">
-              <Video className="h-3 w-3 mr-1" />
-              Grabado
-            </Badge>
-          )}
-        </div>
-
-        {/* Título */}
-        <div className="absolute bottom-6 left-6 z-10">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            {match.title}
-          </h1>
-          <div className="flex items-center gap-4 text-white/90">
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span className="capitalize">{formatDate(match.match_date)}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>{formatTime(match.match_time)}</span>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen">
+      {/* Header */}
+      <div className="max-w-4xl mx-auto px-6 py-6">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => router.back()}
+          className="mb-4"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Volver
+        </Button>
       </div>
 
-      {/* Contenido principal */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Información del partido */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Detalles básicos */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" />
-                  Información del Partido
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Ubicación</p>
-                    <p className="font-semibold">{match.location}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Cancha</p>
-                    <p className="font-semibold">Número {match.field_number}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Formato</p>
-                    <p className="font-semibold">{match.format}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Estado</p>
-                    <Badge className={match.stats?.is_full ? 'bg-app-error' : 'bg-green-500'}>
-                      {match.stats?.is_full ? 'Completo' : 'Disponible'}
-                    </Badge>
-                  </div>
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-6 pb-48">
+        {/* Match Image */}
+        <div className="relative aspect-video rounded-2xl overflow-hidden mb-6">
+          {match.cover_image ? (
+            <Image
+              src={match.cover_image}
+              alt={match.title}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+              <div className="text-gray-400 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                  ⚽
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-green-600" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Jugador:</span>
-                    <span className="font-semibold text-green-600">{formatPrice(match.player_price)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-green-600" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Arquero:</span>
-                    <span className="font-semibold text-green-600">{formatPrice(match.goalkeeper_price)}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Lista de jugadores */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Jugadores de campo */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-5 w-5" />
-                      Jugadores
-                    </div>
-                    <Badge variant="outline">
-                      {regularPlayers.length}/{match.max_players}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {regularPlayers.length === 0 ? (
-                    <p className="text-gray-500 text-sm">No hay jugadores inscritos aún</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {regularPlayers.map((player) => (
-                        <div key={player.id} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-                          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                            {player.avatar_url ? (
-                              <Image
-                                src={player.avatar_url}
-                                alt={player.name}
-                                width={32}
-                                height={32}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-app-primary rounded-full flex items-center justify-center text-app-primary-text text-sm font-bold">
-                                {player.name.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium">{player.name}</p>
-                            <p className="text-xs text-gray-500">
-                              {new Date(player.registeredAt).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <UserCheck className="h-4 w-4 text-green-500" />
-                            <Badge variant={player.payment_status === 'paid' ? 'default' : 'outline'} className="text-xs">
-                              {player.payment_status === 'paid' ? 'Pagado' : 'Pendiente'}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Arqueros */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-5 w-5" />
-                      Arqueros
-                    </div>
-                    <Badge variant="outline">
-                      {goalkeepers.length}/{match.max_goalkeepers}
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {goalkeepers.length === 0 ? (
-                    <p className="text-gray-500 text-sm">No hay arqueros inscritos aún</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {goalkeepers.map((player) => (
-                        <div key={player.id} className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 dark:bg-gray-800">
-                          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                            {player.avatar_url ? (
-                              <Image
-                                src={player.avatar_url}
-                                alt={player.name}
-                                width={32}
-                                height={32}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                {player.name.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p className="font-medium">{player.name}</p>
-                            <p className="text-xs text-gray-500">
-                              {new Date(player.registeredAt).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <UserCheck className="h-4 w-4 text-green-500" />
-                            <Badge variant={player.payment_status === 'paid' ? 'default' : 'outline'} className="text-xs">
-                              {player.payment_status === 'paid' ? 'Pagado' : 'Pendiente'}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                <span>Sin imagen</span>
+              </div>
             </div>
-          </div>
-
-          {/* Panel de inscripción */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  {userRegistered ? 'Ya estás inscrito' : 'Inscríbete al partido'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {!isAuthenticated ? (
-                  <div className="text-center space-y-4">
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Debes iniciar sesión para inscribirte
-                    </p>
-                    <div className="space-y-2">
-                      <Link href="/login" className="w-full">
-                        <Button className="w-full">Iniciar Sesión</Button>
-                      </Link>
-                      <Link href="/signup" className="w-full">
-                        <Button variant="outline" className="w-full">Crear Cuenta</Button>
-                      </Link>
-                    </div>
-                  </div>
-                ) : userRegistered ? (
-                  <div className="space-y-4">
-                    <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                      <UserCheck className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                      <p className="text-green-700 dark:text-green-300 font-medium">
-                        ¡Estás inscrito en este partido!
-                      </p>
-                    </div>
-                    <Button
-                      onClick={handleUnregister}
-                      disabled={registering}
-                      variant="outline"
-                      className="w-full border-app-error text-app-error hover:bg-app-error hover:text-app-error-text"
-                    >
-                      {registering ? 'Cancelando...' : 'Cancelar inscripción'}
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Button
-                        onClick={() => handleRegister('player')}
-                        disabled={!canRegisterAsPlayer || registering}
-                        className="w-full"
-                      >
-                        {registering ? 'Inscribiendo...' : `Inscribirse como jugador (${formatPrice(match.player_price)})`}
-                      </Button>
-                      {!canRegisterAsPlayer && (
-                        <p className="text-xs text-gray-500 text-center">No hay espacios disponibles para jugadores</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <Button
-                        onClick={() => handleRegister('goalkeeper')}
-                        disabled={!canRegisterAsGoalkeeper || registering}
-                        variant="outline"
-                        className="w-full"
-                      >
-                        {registering ? 'Inscribiendo...' : `Inscribirse como arquero (${formatPrice(match.goalkeeper_price)})`}
-                      </Button>
-                      {!canRegisterAsGoalkeeper && (
-                        <p className="text-xs text-gray-500 text-center">No hay espacios disponibles para arqueros</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Estadísticas */}
-            {match.stats && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="h-5 w-5" />
-                    Estadísticas
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Total confirmados:</span>
-                    <span className="font-semibold">
-                      {match.stats.total_players + match.stats.total_goalkeepers}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Jugadores:</span>
-                    <span className="font-semibold">
-                      {match.stats.total_players}/{match.max_players}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Arqueros:</span>
-                    <span className="font-semibold">
-                      {match.stats.total_goalkeepers}/{match.max_goalkeepers}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Espacios disponibles:</span>
-                    <span className="font-semibold">
-                      {match.stats.available_player_spots + match.stats.available_goalkeeper_spots}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
+          )}
+          
+          {/* Badges */}
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
+            <div className="bg-white/90 backdrop-blur-sm text-gray-900 text-sm font-medium px-3 py-1 rounded-lg">
+              {match.format}
+            </div>
+            {match.will_be_recorded && (
+              <div className="bg-red-500 text-white text-sm font-medium px-3 py-1 rounded-lg flex items-center gap-1">
+                🔴 Grabado
+              </div>
             )}
           </div>
+        </div>
+
+        {/* Match Info */}
+        <div className="space-y-6">
+          {/* Title and basic info */}
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              {match.title}
+            </h1>
+            
+          </div>
+
+          {/* Información del Partido */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+            <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Información del Partido</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Ubicación</p>
+                <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <MapPin className="h-4 w-4" />
+                  {match.location}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Cancha</p>
+                <p className="font-semibold text-gray-900 dark:text-white">Número {match.field_number}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Fecha y Hora</p>
+                <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  {formatDate(match.match_date)} a las {formatTime(match.match_time)}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Formato</p>
+                <p className="font-semibold text-gray-900 dark:text-white">{match.format}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Cupos Ocupados</p>
+                <p className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  {match.stats ? match.stats.total_players + match.stats.total_goalkeepers : 0}/{match.max_players + match.max_goalkeepers}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Estado</p>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  match.stats?.is_full 
+                    ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300' 
+                    : 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300'
+                }`}>
+                  {match.stats?.is_full ? 'Completo' : 'Disponible'}
+                </span>
+              </div>
+            </div>
+            
+            {/* Precios */}
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-3">Precios</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Jugador de campo</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{formatPrice(match.player_price)}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Arquero</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">{formatPrice(match.goalkeeper_price)}</p>
+                </div>
+              </div>
+            </div>
+
+            {match.will_be_recorded && (
+              <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <p className="text-red-700 dark:text-red-300 text-sm font-medium flex items-center gap-2">
+                  🔴 Este partido será grabado y transmitido
+                </p>
+              </div>
+            )}
+          </div>
+
+
+
+          {/* Lista Unificada de Jugadores */}
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Jugadores Inscritos
+              </h2>
+              <div className="text-sm text-gray-500">
+                <span>{players.length}/{match.max_players + match.max_goalkeepers} jugadores</span>
+              </div>
+            </div>
+            
+            {players.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-8">No hay jugadores inscritos aún</p>
+            ) : (
+              <div className="space-y-3">
+                {[...goalkeepers, ...regularPlayers].map((player) => (
+                  <div key={player.id} className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                      {player.avatar_url ? (
+                        <Image
+                          src={player.avatar_url}
+                          alt={player.name}
+                          width={40}
+                          height={40}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-app-primary rounded-full flex items-center justify-center text-app-primary-text text-sm font-bold">
+                          {player.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-gray-900 dark:text-white">{player.name}</p>
+                        {player.position === 'goalkeeper' && (
+                          <span className="text-lg">🧤</span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        {player.position === 'goalkeeper' ? 'Arquero' : 'Jugador'}
+                      </p>
+                    </div>
+                    <div className="text-xs">
+                      <span className="text-green-600 font-medium">✅ Confirmado</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+
+        </div>
+      </div>
+      
+      {/* Fixed Registration Section */}
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="max-w-4xl mx-auto px-6 bg-white dark:bg-gray-800 p-6 border-t border-gray-200 dark:border-gray-700 shadow-lg rounded-t-2xl">
+          {!isAuthenticated ? (
+            <div className="text-center space-y-4">
+              <h2 className="font-semibold text-gray-900 dark:text-white">¿Quieres jugar?</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                Inicia sesión para inscribirte en este partido
+              </p>
+              <div className="space-y-3">
+                <Link href="/login" className="block">
+                  <Button className="w-full bg-app-primary hover:bg-app-primary-hover text-app-primary-text">
+                    Iniciar Sesión
+                  </Button>
+                </Link>
+                <Link href="/signup" className="block">
+                  <Button variant="ghost" className="w-full">
+                    Crear Cuenta
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ) : userRegistered ? (
+            <div className="text-center space-y-4">
+              <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                <p className="text-green-700 dark:text-green-300 font-medium">
+                  ✅ Ya estás inscrito en este partido
+                </p>
+              </div>
+              <Button
+                onClick={handleUnregister}
+                disabled={registering}
+                variant="ghost"
+                className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                {registering ? 'Cancelando...' : 'Cancelar inscripción'}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <h2 className="font-semibold text-gray-900 dark:text-white text-center">¿Quieres jugar?</h2>
+              
+              <div className="space-y-3">
+                <Button
+                  onClick={() => handleRegister('player')}
+                  disabled={!canRegisterAsPlayer || registering || match.stats?.is_full}
+                  className="w-full bg-app-primary hover:bg-app-primary-hover text-app-primary-text"
+                >
+                  {registering ? 'Inscribiendo...' : 
+                   match.stats?.is_full ? 'Partido completo' :
+                   !canRegisterAsPlayer ? 'Sin cupos de jugador' :
+                   `Jugar (${formatPrice(match.player_price)})`}
+                </Button>
+                
+                <Button
+                  onClick={() => handleRegister('goalkeeper')}
+                  disabled={!canRegisterAsGoalkeeper || registering || match.stats?.is_full}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {registering ? 'Inscribiendo...' : 
+                   match.stats?.is_full ? 'Partido completo' :
+                   !canRegisterAsGoalkeeper ? 'Sin cupos de arquero' :
+                   `Ser arquero (${formatPrice(match.goalkeeper_price)})`}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

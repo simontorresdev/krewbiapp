@@ -59,7 +59,7 @@ export function MatchCard({ match, className = '' }: MatchCardProps) {
     <div className={`group cursor-pointer ${className}`}>
       <Link href={`/partidos/${match.id}`}>
         {/* Image */}
-        <div className="relative aspect-square rounded-xl overflow-hidden mb-3">
+        <div className="relative aspect-video rounded-xl overflow-hidden mb-3">
           {match.cover_image ? (
             <Image
               src={match.cover_image}

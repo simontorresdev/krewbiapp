@@ -8,11 +8,11 @@ import { MatchCard } from '@/components/matches/MatchCard';
 import { getActiveMatches } from '@/lib/matches';
 import type { MatchWithStats } from '@/lib/types/matches';
 import { useEffect, useState } from 'react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Instagram } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
-  const { user, loading, isAuthenticated } = useAuth();
+  const { loading, isAuthenticated } = useAuth();
   const [matches, setMatches] = useState<MatchWithStats[]>([]);
   const [loadingMatches, setLoadingMatches] = useState(true);
 
@@ -48,13 +48,44 @@ export default function Home() {
         <div className="flex justify-between items-center">
           <CompanyLogo />
           
-          {!isAuthenticated && (
-            <Link href="/login">
-              <Button className="bg-app-primary hover:bg-app-primary-hover text-app-primary-text">
-                Iniciar Sesión
-              </Button>
-            </Link>
-          )}
+          <div className="flex items-center gap-4">
+            {/* Social Media Links */}
+            {isAuthenticated && (
+              <div className="flex items-center gap-3">
+                <Link 
+                  href="https://www.instagram.com/krewbi/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <Instagram className="h-5 w-5 text-white" />
+                </Link>
+                <Link 
+                  href="https://www.tiktok.com/@krewbiapp?lang=es" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <svg 
+                    className="h-5 w-5 text-white" 
+                    fill="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-.88-.05A6.33 6.33 0 0 0 5.16 20.5a6.33 6.33 0 0 0 10.75-4.5V7.5a8.16 8.16 0 0 0 4.77 1.2v-3.44a4.85 4.85 0 0 1-1.09.43z"/>
+                  </svg>
+                </Link>
+              </div>
+            )}
+
+            
+            {!isAuthenticated && (
+              <Link href="/login">
+                <Button className="bg-app-primary hover:bg-app-primary-hover text-app-primary-text">
+                  Iniciar Sesión
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 

@@ -9,7 +9,7 @@ interface CompanyLogoProps {
 
 export function CompanyLogo({ className = '' }: CompanyLogoProps) {
   return (
-    <div className={`flex items-center justify-center mb-8 ${className}`}>
+    <div className={`flex items-center justify-center ${className}`}>
       <Link href="/" className="cursor-pointer transition-opacity hover:opacity-80">
         <Image
           src="/krewbi-logo.png"
