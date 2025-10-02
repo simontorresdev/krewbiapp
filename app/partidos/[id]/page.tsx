@@ -165,11 +165,8 @@ export default function MatchDetailPage() {
     );
   }
 
-  console.log('All players:', players);
   const regularPlayers = players.filter(p => p.position === 'player');
   const goalkeepers = players.filter(p => p.position === 'goalkeeper');
-  console.log('Regular players:', regularPlayers);
-  console.log('Goalkeepers:', goalkeepers);
   const canRegisterAsPlayer = match.stats && match.stats.available_player_spots > 0;
   const canRegisterAsGoalkeeper = match.stats && match.stats.available_goalkeeper_spots > 0;
 

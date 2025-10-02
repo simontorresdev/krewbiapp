@@ -14,8 +14,8 @@ export function CompanyLogo({ className = '' }: CompanyLogoProps) {
         <Image
           src="/krewbi-logo.png"
           alt="Krewbi Logo"
-          width={220}
-          height={10}
+          width={160}
+          height={8}
           className="object-contain"
           priority
         />

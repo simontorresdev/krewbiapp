@@ -1,8 +1,7 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, MapPin, Users, Video, DollarSign } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { MapPin, Clock, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { MatchWithStats } from '@/lib/types/matches';
@@ -15,12 +14,20 @@ interface MatchCardProps {
 export function MatchCard({ match, className = '' }: MatchCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    if (date.toDateString() === today.toDateString()) {
+      return 'Hoy';
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return 'Mañana';
+    } else {
+      return date.toLocaleDateString('es-ES', {
+        day: 'numeric',
+        month: 'short'
+      });
+    }
   };
 
   const formatTime = (timeString: string) => {
@@ -35,115 +42,106 @@ export function MatchCard({ match, className = '' }: MatchCardProps) {
     }).format(price);
   };
 
-  const getAvailabilityColor = () => {
-    if (!match.stats) return 'bg-gray-500';
+  const getTotalSpots = () => {
+    if (!match.stats) return { registered: 0, total: match.max_players + match.max_goalkeepers };
     
-    const { available_player_spots, total_players, is_full } = match.stats;
-    
-    if (is_full) return 'bg-app-error';
-    if (available_player_spots <= 2) return 'bg-yellow-500';
-    return 'bg-green-500';
-  };
-
-  const getAvailabilityText = () => {
-    if (!match.stats) return 'Cargando...';
-    
-    const { total_players, total_goalkeepers, is_full } = match.stats;
+    const { total_players, total_goalkeepers } = match.stats;
     const totalRegistered = total_players + total_goalkeepers;
     const maxTotal = match.max_players + match.max_goalkeepers;
     
-    if (is_full) return 'Completo';
-    return `${totalRegistered}/${maxTotal} confirmados`;
+    return { registered: totalRegistered, total: maxTotal };
   };
 
+  const spots = getTotalSpots();
+  const isFull = match.stats?.is_full || spots.registered >= spots.total;
+
   return (
-    <Link href={`/partidos/${match.id}`} className={`block ${className}`}>
-      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border-2 hover:border-app-primary-light">
-        <div className="relative h-48 bg-gradient-to-r from-app-primary to-app-primary-hover">
+    <div className={`group cursor-pointer ${className}`}>
+      <Link href={`/partidos/${match.id}`}>
+        {/* Image */}
+        <div className="relative aspect-square rounded-xl overflow-hidden mb-3">
           {match.cover_image ? (
             <Image
               src={match.cover_image}
               alt={match.title}
               fill
-              className="object-cover"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div className="flex items-center justify-center h-full">
-              <Users className="h-16 w-16 text-app-primary-text opacity-80" />
+            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+              <div className="text-gray-400 text-center">
+                <div className="w-12 h-12 mx-auto mb-2 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                  ⚽
+                </div>
+                <span className="text-sm">Sin imagen</span>
+              </div>
             </div>
           )}
           
-          {/* Badges en la esquina superior */}
-          <div className="absolute top-3 right-3 flex flex-col gap-2">
-            <Badge 
-              className={`${getAvailabilityColor()} text-white font-medium px-3 py-1`}
-            >
-              {getAvailabilityText()}
-            </Badge>
-            
-            {match.will_be_recorded && (
-              <Badge className="bg-red-600 text-white font-medium px-3 py-1">
-                <Video className="h-3 w-3 mr-1" />
-                Grabado
-              </Badge>
-            )}
+          {/* Format badge */}
+          <div className="absolute top-3 left-3">
+            <div className="bg-white/90 backdrop-blur-sm text-gray-900 text-xs font-medium px-2 py-1 rounded-lg">
+              {match.format}
+            </div>
           </div>
 
-          {/* Badge de formato en la esquina inferior izquierda */}
-          <div className="absolute bottom-3 left-3">
-            <Badge className="bg-black/70 text-white font-bold px-3 py-1">
-              {match.format}
-            </Badge>
-          </div>
+          {/* Recording badge */}
+          {match.will_be_recorded && (
+            <div className="absolute top-3 right-3">
+              <div className="bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-lg flex items-center gap-1">
+                🔴 Grabado
+              </div>
+            </div>
+          )}
+
+          {/* Availability overlay */}
+          {isFull && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+              <div className="bg-white text-gray-900 px-3 py-2 rounded-lg font-medium">
+                Completo
+              </div>
+            </div>
+          )}
         </div>
 
-        <CardContent className="p-4 space-y-3">
-          {/* Título */}
-          <h3 className="font-bold text-lg text-gray-900 dark:text-white line-clamp-2">
+        {/* Content */}
+        <div className="space-y-1">
+          {/* Match title */}
+          <h3 className="font-medium text-gray-900 dark:text-white truncate">
             {match.title}
           </h3>
 
-          {/* Fecha y hora */}
-          <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span className="capitalize">{formatDate(match.match_date)}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>{formatTime(match.match_time)}</span>
-            </div>
-          </div>
-
-          {/* Ubicación */}
-          <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-            <MapPin className="h-4 w-4" />
+          {/* Location */}
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 text-sm">
+            <MapPin className="h-3 w-3" />
             <span>{match.location} - Cancha {match.field_number}</span>
           </div>
 
-          {/* Precios */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-1 text-sm">
-              <DollarSign className="h-4 w-4 text-green-600" />
-              <span className="text-gray-600 dark:text-gray-400">
-                Jugador: <span className="font-semibold text-green-600">{formatPrice(match.player_price)}</span>
-              </span>
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Arquero: <span className="font-semibold text-green-600">{formatPrice(match.goalkeeper_price)}</span>
-            </div>
+          {/* Date and time */}
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 text-sm">
+            <Clock className="h-3 w-3" />
+            <span>{formatDate(match.match_date)} a las {formatTime(match.match_time)}</span>
           </div>
 
-          {/* Información adicional de jugadores */}
-          {match.stats && (
-            <div className="flex items-center justify-between pt-2 text-xs text-gray-500 dark:text-gray-400">
-              <span>{match.stats.total_players} jugadores</span>
-              <span>{match.stats.total_goalkeepers} arqueros</span>
-              <span>{match.stats.available_player_spots} espacios libres</span>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </Link>
+          {/* Availability */}
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 text-sm">
+            <Users className="h-3 w-3" />
+            <span>{spots.registered}/{spots.total} cupos ocupados</span>
+          </div>
+        </div>
+      </Link>
+
+      {/* CTA Button */}
+      <div className="mt-3">
+        <Link href={`/partidos/${match.id}`}>
+          <Button 
+            className="w-full bg-app-primary hover:bg-app-primary-hover text-app-primary-text font-medium py-2.5"
+            disabled={isFull}
+          >
+            {isFull ? 'Completo' : 'Quiero jugar'}
+          </Button>
+        </Link>
+      </div>
+    </div>
   );
 }

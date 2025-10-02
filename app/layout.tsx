@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 min-h-screen`}
       >
         <AuthProvider>
-          <div className="max-w-[1000px] mx-auto">
+          <div className="max-w-[1000px] mx-auto pb-12">
             {children}
           </div>
           <ConditionalBottomNav />

@@ -35,8 +35,6 @@ export async function getActiveMatches(): Promise<MatchWithStats[]> {
         const { data: statsData, error: statsError } = await supabase
           .rpc('get_match_stats', { match_uuid: match.id });
 
-        console.log(`Stats for match ${match.id}:`, { statsData, statsError });
-
         if (statsError) {
           console.error(`Error fetching stats for match ${match.id}:`, statsError);
           return {
@@ -108,22 +106,16 @@ export async function getMatchById(matchId: string): Promise<MatchWithStats | nu
  */
 export async function getMatchPlayers(matchId: string): Promise<MatchPlayer[]> {
   try {
-    console.log('Fetching players for match:', matchId);
-    
     // Primero intentamos con la función RPC que ya creamos
     const { data, error } = await supabase.rpc('get_match_players', {
       match_id: matchId
     });
     
-    console.log('RPC result:', { data, error });
-    
     if (!error && data) {
-      console.log('Using RPC data:', data);
       return data;
     }
 
     // Si falla, usamos consulta directa con datos básicos
-    console.log('RPC failed, using basic query:', error);
     const { data: registrations } = await supabase
       .from('match_registrations')
       .select('user_id, registration_date, position, payment_status')
